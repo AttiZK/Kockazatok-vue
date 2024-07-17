@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Sanchez&display=swap&subset=latin-ext');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+  h1{
+    @apply text-4xl lg:text-5xl text-blue-800 font-black
+  }
+  h2{
+    @apply text-3xl lg:text-4xl text-blue-800 font-bold
+  }
+  button{
+    @apply flex items-center gap-4 justify-center py-2 px-4 lg:px-11 rounded-md text-left font-sans w-fit lg:w-max border font-bold 
+    hover:brightness-110 focus:outline-none focus:ring-4 focus:ring-blue-700 focus:ring-opacity-30
+  }
+  button svg{
+    @apply min-w-[29px]
+  }
+  button.btn-primary{
+    @apply border-white bg-gradient-to-r from-grad1 via-grad2 to-grad3 hover:bg-blue-800 text-white
+  }
+  button.btn-secondary{
+    @apply border-blue-600 text-blue-600 bg-white
+  }
+  main{
+    @apply flex flex-col items-center justify-between min-h-screen
+  }
+  .accordion div{
+    @apply flex
+  }
+  #features svg{  
+    @apply mb-2 inline
+  }
+  #features>.columns-1>div{
+    @apply border-dashed border-b-2 lg:border-r-2 lg:border-b-0 border-blue-500 last:border-0 pr-4 pb-8 mb-8 lg:mb-0 min-h-fit
+  }
+  .contact-pg h3{
+    @apply font-bold mt-5
+  }
+  .contact-pg p{
+    @apply text-blue-600
+  }
+  form label{
+    @apply mb-8 uppercase text-sm text-blue-700 font-semibold tracking-widest
+  }
+  input, textarea{
+    @apply py-2 px-6 rounded text-lg font-serif text-blue-700 font-normal appearance-none outline-none border-2 border-blue-700 w-full leading-tight
+  }
+  form em{
+    @apply text-red text-xs mt-1
+  }
+  form div > svg{
+    @apply w-6 h-6 absolute top-1/2 -translate-y-1/2 left-2 border-r pr-2
+  }
+  .home footer{
+    @apply bg-blue-800 text-white border-green
+  }
+  .added{
+    @apply bg-green text-white ring-0
+  }
+  main .container{
+    @apply md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl
+  }
+
+  .view{
+    @apply w-full px-2 lg:px-4 xl:px-6
+  }
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+
+  --blue-800: #1B3266;
+  --serif: "Sanchez", serif;
+}
+
+/*@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+*/
+
+:where(blockquote,dl,dd,h1,h2,h3,h4,h5,h6,hr,figure,p,pre,li,span){
+  color: var(--blue-800);
+}
+
+body *:where(:not(.active-accordion)){
+  transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+p{
+  font-family: var(--serif)
+}
+
+li.nav-item{
+  font-size: 16px;
+  font-weight: 500;
+}
+
+#hero-section > .container:after{
+  content: '';
+  display: block;
+  background: linear-gradient(90deg, #EEF7FF, #CCE8FF);
+  width: 100%;
+  height:5px;
+  position: absolute;
+  bottom:-20px;
+}
+#hero-section > .container{
+  background: radial-gradient(85% 110% at 15% 25%, rgba(238, 247, 255, 0.70) 0%, rgba(212, 236, 255, 0.70) 100%);
+}
+
+#bottom1 > .container{
+  background: radial-gradient(270% 400% at 15% 55%, rgba(238, 247, 255, 0.70) 0%, rgba(212, 236, 255, 0.70) 100%);
+}
+
+#usage{
+  background-image:url(/img/clouds-bg.svg);
+}
+
+#usage-chart{
+  grid-template-columns: 7.5fr 5fr;
+  grid-gap:2rem
+}
