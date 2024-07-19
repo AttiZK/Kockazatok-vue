@@ -13,6 +13,7 @@ export default {
         'gradient-conic':
         'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'login-pattern': "url('/img/login-bg.webp')",
+        'white-to-lightblue': "linear-gradient(90deg, #fff, #EEF7FF)"
       },
       borderRadius: {
         'md': '0.5rem',
