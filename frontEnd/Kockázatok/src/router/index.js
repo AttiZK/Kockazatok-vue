@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import axios from "../axios";
 import HomeView from '@/views/HomeView.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import StartView from '@/views/StartView.vue';
@@ -25,7 +26,8 @@ const routes = [
   {
     path: '/start',
     name: 'Start',
-    component: StartView
+    component: StartView,
+    meta: { requiresAuth: true }
   },
   {
     path: '/kereso',
@@ -74,5 +76,31 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes
 });
+
+router.beforeEach(async (to, from) => {
+  try {
+    const authenticated = await is_authenticated();
+    if (to.meta.requiresAuth && !authenticated) {
+      // User is not authenticated, redirect to login
+      return { path: "/bejelentkezes" };
+    }
+    if ((to.path === "/bejelentkezes" || to.path === "/elofizetes") && authenticated) {
+      // User is authenticated and trying to access login, redirect to dashboard
+      return { path: "/fiokom" };
+    }
+  } catch (err) {
+    alert('server is down');
+  }
+});
+
+async function is_authenticated() {
+  try {
+    const response = await axios.get("profile/");
+    store.updateName(response.data.username);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
 
 export default router;

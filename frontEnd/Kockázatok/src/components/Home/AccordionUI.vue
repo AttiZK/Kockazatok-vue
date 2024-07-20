@@ -37,7 +37,6 @@
       class="flex-col gap-4 bg-white font-serif text-blue-800 h-auto rounded-b-md px-6 pb-10 border-blue-300 mb-2 drop-shadow-[7px_5px_0_#D4ECFF]"
     >
       {{ content }}
-      <CTA1 text="Fizessen elő a webappra" />
     </div>
   </div>
 </template>

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "noImplicitAny": false,
     "baseUrl": ".",
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -17,9 +18,11 @@
       "@/*": [
        "src/*"
       ]
-     }
+     },
+     
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/shims-vue.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["node_modules"]
 }
+

@@ -3,12 +3,16 @@
     <div class="flex flex-col lg:flex-row">
       <div class="flex flex-col w-full lg:w-1/2">
         <h1>Kereső</h1>
-        <label for="tev">Tevékenység:</label>
-        <select id="tev" v-model="selectedTev" @change="onTevChange">
-          <option v-for="tev in uniqueTevs" :key="tev.tevid" :value="tev.tevid">
-            {{ tev.tev }}
-          </option>
-        </select>
+          <label for="tev">Tevékenység:</label>
+          <select id="tev" v-model="selectedTev" @change="onTevChange">
+            <option
+              v-for="tev in uniqueTevs"
+              :key="tev.tevid"
+              :value="tev.tevid"
+            >
+              {{ tev.tev }}
+            </option>
+          </select>
         <div>
           <label for="fcsop">Folyamatcsoport:</label>
           <select
@@ -53,9 +57,7 @@
             v-for="(item, index) in data"
             :key="index"
             class="flex border border-blue-600 hover:border-blue-900 justify-between rounded-md p-3 pt-4 gap-4 items-center cursor-pointer"
-            :class="{
-              'bg-white-to-lightblue': activeClass && item === selectedKockazat,
-            }"
+            :class="{ 'bg-white-to-lightblue': activeClass && item === selectedKockazat }"
             @click="selectKockazat(item)"
           >
             <div class="basis-4/12">{{ item.kockcsop }}</div>
@@ -65,7 +67,10 @@
         </div>
       </div>
       <div class="flex flex-row lg:flex-col w-full lg:w-1/2">
-        <div v-if="selectedKockazat" class="mt-4 p-4">
+        <div
+          v-if="selectedKockazat"
+          class="mt-4 p-4"
+        >
           <h2 class="text-xl font-bold">{{ selectedKockazat.nev }}</h2>
           <p><strong>Tevékenység:</strong> {{ selectedKockazat.tevid }}</p>
           <p>

@@ -21,5 +21,8 @@
     <RouterLink to="/riport">
       Riport
     </RouterLink>
+    <RouterLink to="/bejelentkezes">
+      Bejelentkezés
+    </RouterLink>
   </header>
 </template>
