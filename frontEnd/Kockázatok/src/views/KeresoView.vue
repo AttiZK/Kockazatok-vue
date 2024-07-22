@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import jwt_decode from 'jwt-decode';
+import VueJwtDecode from 'vue-jwt-decode';
 
 export default {
   data() {
@@ -239,7 +239,7 @@ export default {
     getCurrentUserId() {
       const token = localStorage.getItem("token");
       if (token) {
-        const decoded = jwt_decode(token);
+        const decoded = VueJwtDecode.decode(token)
         return decoded.userId; // Token struktúrájától függően a megfelelő mező
       }
       return null; // Vagy valamilyen alapértelmezett érték, ha nincs token
