@@ -100,6 +100,8 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode';
+
 export default {
   data() {
     return {
@@ -194,7 +196,7 @@ export default {
       if (!this.selectedKockazat) return;
 
       const body = {
-        user_id: this.getCurrentUserId(),
+        userId: this.getCurrentUserId(),
         kockcsop: this.selectedKockazat.kockcsop,
         nev: this.selectedKockazat.nev,
         ok: this.selectedKockazat.ok,
@@ -217,7 +219,7 @@ export default {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(body),
-          },
+          }
         );
 
         if (!response.ok) {
@@ -225,17 +227,22 @@ export default {
         }
 
         const result = await response.json();
-        if (result.id === this.selectedKockazat.id) {
+        if (result.id) {
           this.isAdded = true;
         }
       } catch (error) {
         console.error("Error adding to leltar:", error);
       }
+      
     },
+    
     getCurrentUserId() {
-      // Implementáld a logikát, hogy lekérdezd a jelenlegi felhasználó azonosítóját
-      // Például a `localStorage`-ből vagy az autentikációs tokenből
-      return 8; // Csak példa, helyettesítsd a tényleges felhasználó id-jával
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decoded = jwt_decode(token);
+        return decoded.userId; // Token struktúrájától függően a megfelelő mező
+      }
+      return null; // Vagy valamilyen alapértelmezett érték, ha nincs token
     },
     selectKockazat(item) {
       this.activeClass = true; // Frissítjük az aktív osztály állapotát

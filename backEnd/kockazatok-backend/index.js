@@ -11,6 +11,7 @@ const express_1 = __importDefault(require("express"));
 const db_1 = __importDefault(require("./database/db"));
 const cors = require("cors");
 const app = (0, express_1.default)();
+const { verifyToken } = require('./controllers/authController');
 
 const PORT = process.env.PORT || 3000;
 const corsOptions = {
@@ -72,7 +73,7 @@ app.get("/folyamat", cors(corsOptions), async (req, res) => {
 
 //Leltárhoz adás
 
-app.post('/leltar', addLeltar);
+app.post('/leltar', verifyToken, addLeltar);
 
 //kockazatok query
 
