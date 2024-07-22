@@ -1,5 +1,7 @@
+// router.js
+
 import { createRouter, createWebHistory } from 'vue-router';
-import axios from "../axios";
+import { is_authenticated } from '../auth';
 import HomeView from '@/views/HomeView.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import StartView from '@/views/StartView.vue';
@@ -13,63 +15,17 @@ import AccountView from '@/views/AccountView.vue';
 import ElofizetesView from '@/views/ElofizetesView.vue';
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/bejelentkezes',
-    name: 'login',
-    component: LoginPage
-  },
-  {
-    path: '/start',
-    name: 'Start',
-    component: StartView,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/kereso',
-    name: 'Kereso',
-    component: KeresoView
-  },
-  {
-    path: '/leltar',
-    name: 'Leltar',
-    component: LeltarView
-  },
-  {
-    path: '/ertekelo',
-    name: 'Ertekelo',
-    component: ErtekeloView
-  },
-  {
-    path: '/kezelo',
-    name: 'Kezelo',
-    component: KezeloView
-  },
-  {
-    path: '/riport',
-    name: 'Riport',
-    component: RiportView
-  },
-  {
-    path: '/dokumentacio',
-    name: 'Doku',
-    component: DokuView
-  },
-  {
-    path: '/elofizetes',
-    name: 'Elofizetes',
-    component: ElofizetesView
-  },
-  {
-    path: '/fiokom',
-    name: 'Account',
-    component: AccountView
-  },
-  
+  { path: '/', name: 'home', component: HomeView },
+  { path: '/bejelentkezes', name: 'login', component: LoginPage },
+  { path: '/start', name: 'Start', component: StartView, meta: { requiresAuth: true } },
+  { path: '/kereso', name: 'Kereso', component: KeresoView },
+  { path: '/leltar', name: 'Leltar', component: LeltarView },
+  { path: '/ertekelo', name: 'Ertekelo', component: ErtekeloView },
+  { path: '/kezelo', name: 'Kezelo', component: KezeloView },
+  { path: '/riport', name: 'Riport', component: RiportView },
+  { path: '/dokumentacio', name: 'Doku', component: DokuView },
+  { path: '/elofizetes', name: 'Elofizetes', component: ElofizetesView },
+  { path: '/fiokom', name: 'Account', component: AccountView }
 ];
 
 const router = createRouter({
@@ -79,7 +35,9 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   try {
+    console.log('Checking authentication status');
     const authenticated = await is_authenticated();
+    console.log('Authenticated:', authenticated);
     if (to.meta.requiresAuth && !authenticated) {
       // User is not authenticated, redirect to login
       return { path: "/bejelentkezes" };
@@ -92,15 +50,5 @@ router.beforeEach(async (to, from) => {
     alert('server is down');
   }
 });
-
-async function is_authenticated() {
-  try {
-    const response = await axios.get("profile/");
-    store.updateName(response.data.username);
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
 
 export default router;

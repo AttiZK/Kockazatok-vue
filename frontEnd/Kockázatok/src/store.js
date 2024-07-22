@@ -2,12 +2,12 @@
 import { reactive } from 'vue';
 
 export const store = reactive({
-  username: null,
-  updateName(name) {
-    this.username = name;
-  },
+  email: null,
   hasLogin: false,
+  updateEmail(email) {
+    this.email = email;
+  },
   updateHasLogin(value) {
     this.hasLogin = value;
   }
-})
+});

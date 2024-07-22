@@ -1,7 +1,7 @@
 const db = require('./database/db'); 
 const bcrypt = require('bcryptjs');
 
-exports.login = async (req, res) => {
+exports.bejelentkezes = async (req, res) => {
   const { email, password } = req.body;
 
   try {

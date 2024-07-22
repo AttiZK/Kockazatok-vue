@@ -1,5 +1,5 @@
 <template>
-  <auth-form :auth-name="'login'" />
+  <auth-form :auth-name="'bejelentkezes'" />
 </template>
 
 <script setup>

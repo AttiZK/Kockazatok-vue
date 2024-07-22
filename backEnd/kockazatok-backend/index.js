@@ -27,7 +27,7 @@ const profileRoute = require("./routes/profileRoute");
 const { verifyToken } = require("./controllers/authController");
 
 app.use('/auth', authRoute);
-app.use('/profile', profileRoute);
+app.use('/fiokom', profileRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Kockazatok API");

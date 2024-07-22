@@ -57,8 +57,8 @@ const register = async (req, res) => {
   }
 };
 
-// User login function
-const login = async (req, res) => {
+// User bejelentkezes function
+const bejelentkezes = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email) {
@@ -71,25 +71,43 @@ const login = async (req, res) => {
     const user = await db.default.oneOrNone("SELECT * FROM users WHERE email = $1", [email]);
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "Nincs ilyen fiók" });
     }
 
-    const passwordMatch = compare_password(password, user.password_hash); // Use password_hash instead of password
+    const passwordMatch = compare_password(password, user.password_hash);
     if (!passwordMatch) {
       return res.status(401).json({ error: "Invalid password" });
     }
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
 
-    res.json({ message: "Login successful", token });
+    res.json({ message: "bejelentkezes successful", token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Login failed" });
+    res.status(500).json({ error: "bejelentkezes failed" });
+  }
+};
+
+// Fiók adat lekérése
+const getFiokom = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await db.default.oneOrNone("SELECT email FROM users WHERE id = $1", [userId]);
+    
+    if (!user) {
+      return res.status(404).json({ error: "Nincs ilyen fiók" });
+    }
+    
+    res.json({ email: user.email });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch user profile" });
   }
 };
 
 module.exports = {
   verifyToken,
   register,
-  login,
+  bejelentkezes,
+  getFiokom,
 };

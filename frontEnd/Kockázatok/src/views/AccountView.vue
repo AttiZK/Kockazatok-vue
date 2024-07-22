@@ -10,10 +10,14 @@
     <div v-if="error">
       <p>Error: {{ error }}</p>
     </div>
+    <button @click="logout">Kijelentkezés</button>
+    <button @click="start">start</button>
   </div>
 </template>
 
 <script>
+import { logout } from '../auth'; // Importáld a logout függvényt
+
 export default {
   data() {
     return {
@@ -27,9 +31,10 @@ export default {
   methods: {
     async fetchUserProfile() {
       try {
-        const response = await fetch('/profile', {
+        const response = await fetch('/fiokom', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you store the JWT token in localStorage
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
           },
         });
 
@@ -43,10 +48,13 @@ export default {
         this.error = error.message;
       }
     },
+    logout() {
+      logout();
+      this.$router.push('/bejelentkezes');
+    },
+    start() {
+      this.$router.push('/start');
+    }
   },
 };
 </script>
-
-<style scoped>
-/* Add your styles here */
-</style>

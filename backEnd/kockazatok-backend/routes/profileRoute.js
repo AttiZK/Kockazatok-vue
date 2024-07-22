@@ -1,10 +1,16 @@
+var __importDefault = (this && this.__importDefault) || function (mod) {
+  return mod && mod.__esModule ? mod : { default: mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
 const router = express.Router();
-const { verifyToken } = require('../controllers/authController');
-const db = require('../database/db');
+const { verifyToken, getFiokom } = require('../controllers/authController');
+const db = __importDefault(require("../database/db"));
 
-// Get user profile
-router.get('/profile', verifyToken, async (req, res) => {
+router.use(verifyToken);
+router.use(getFiokom);
+// Get fiokom
+router.get('/fiokom', async (req, res) => {
   try {
     const userId = req.userId; // Set in verifyToken middleware
     const user = await db.default.oneOrNone('SELECT email FROM users WHERE id = $1', [userId]);
@@ -16,7 +22,7 @@ router.get('/profile', verifyToken, async (req, res) => {
     res.json({ email: user.email });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to fetch user profile" });
+    res.status(500).json({ error: "Failed to fetch fiokom" });
   }
 });
 
