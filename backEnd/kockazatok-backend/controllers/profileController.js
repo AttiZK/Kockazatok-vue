@@ -7,7 +7,7 @@ const db = __importDefault(require("../database/db")); // Import pg-promise db i
 // Function for retrieving user details
 const fiokom = async (req, res) => {
   try {
-    const user = await db.default.oneOrNone("SELECT email FROM users WHERE id = $1", [req.userId]);
+    const user = await db.default.oneOrNone("SELECT role, email FROM users WHERE id = $1", [req.userId]);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });

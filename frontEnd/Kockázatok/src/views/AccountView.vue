@@ -7,16 +7,12 @@
     <div v-else>
       <p>Loading...</p>
     </div>
-    <div v-if="error">
-      <p>Error: {{ error }}</p>
-    </div>
     <button @click="logout">Kijelentkezés</button>
-    <button @click="start">start</button>
   </div>
 </template>
 
 <script>
-import { logout } from '../auth'; // Importáld a logout függvényt
+import { logout } from '../auth';
 
 export default {
   data() {
@@ -31,7 +27,7 @@ export default {
   methods: {
     async fetchUserProfile() {
       try {
-        const response = await fetch('/fiokom', {
+        const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/fiokom`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
@@ -51,9 +47,6 @@ export default {
     logout() {
       logout();
       this.$router.push('/bejelentkezes');
-    },
-    start() {
-      this.$router.push('/start');
     }
   },
 };

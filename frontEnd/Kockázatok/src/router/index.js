@@ -35,9 +35,9 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   try {
-    console.log('Checking authentication status');
     const authenticated = await is_authenticated();
-    console.log('Authenticated:', authenticated);
+    
+    console.log('Checking authentication status:', authenticated);
     if (to.meta.requiresAuth && !authenticated) {
       // User is not authenticated, redirect to login
       return { path: "/bejelentkezes" };

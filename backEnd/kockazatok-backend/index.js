@@ -1,12 +1,14 @@
 "use strict";
-require('dotenv').config();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-  return mod && mod.__esModule ? mod : { default: mod };
-};
+require("dotenv").config();
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const express_1 = __importDefault(require("express"));
-const db_1 = __importDefault(require("./database/db")); // Biztos, hogy az itt megfelelő adatbázis példányt importálod
+const db_1 = __importDefault(require("./database/db"));
 const cors = require("cors");
 const app = (0, express_1.default)();
 
@@ -24,10 +26,11 @@ app.use(express_1.default.json());
 
 const authRoute = require("./routes/authRoutes");
 const profileRoute = require("./routes/profileRoute");
-const { verifyToken } = require("./controllers/authController");
+const { getFolyamat } = require("./folyamatQuery");
+const { addLeltar } = require('./leltar');
 
-app.use('/auth', authRoute);
-app.use('/fiokom', profileRoute);
+app.use("/auth", authRoute);
+app.use("/fiokom", profileRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Kockazatok API");
@@ -55,34 +58,23 @@ app.get("/kockazatok", async (req, res) => {
   }
 });
 
+//folyamat query -> folyamatQuery.js
+
 app.get("/folyamat", cors(corsOptions), async (req, res) => {
   const { tevid, fcsopid } = req.query;
-  let query = "SELECT DISTINCT tevid, tev, fcsopid, fcsop, folyid, foly FROM folyamat";
-  const conditions = [];
-  const params = [];
-
-  if (tevid) {
-    conditions.push("tevid = $" + (conditions.length + 1));
-    params.push(tevid);
-  }
-
-  if (fcsopid) {
-    conditions.push("fcsopid = $" + (conditions.length + 1));
-    params.push(fcsopid);
-  }
-
-  if (conditions.length > 0) {
-    query += " WHERE " + conditions.join(" AND ");
-  }
-
   try {
-    const result = await db_1.default.any(query, params);
+    const result = await getFolyamat(tevid, fcsopid);
     res.json(result);
   } catch (error) {
-    console.error("Detailed error:", error); // Detailed error logging
     res.status(500).json({ error: error.message, stack: error.stack });
   }
 });
+
+//Leltárhoz adás
+
+app.post('/leltar', addLeltar);
+
+//kockazatok query
 
 app.post("/kockazatok", async (req, res) => {
   const { title, description } = req.body;
@@ -107,7 +99,7 @@ app.put("/kockazatok/:id", async (req, res) => {
   }
 });
 
-app.delete("/kockazatok/:id", async (req, res) => {
+app.delete("/leltar/:id", async (req, res) => {
   try {
     const result = await db_1.default.result("DELETE FROM kockazat WHERE id = $1", [parseInt(req.params.id)]);
     if (!result.rowCount) return res.status(404).json({ message: "kockazat not found" });

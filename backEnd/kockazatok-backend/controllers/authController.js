@@ -13,14 +13,14 @@ const verifyToken = (req, res, next) => {
     const token = auth_header.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
       if (err) {
-        return res.status(401).json({ error: "Invalid token" });
+        return res.status(401).json({ error: "authcontroller.js: Érvénytelen token" });
       } else {
         req.userId = decoded.userId;
         next();
       }
     });
   } else {
-    return res.status(401).json({ error: "Token not provided" });
+    return res.status(401).json({ error: "authcontroller.js: Nincs megadva token" });
   }
 };
 

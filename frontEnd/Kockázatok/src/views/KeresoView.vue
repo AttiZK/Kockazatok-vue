@@ -3,16 +3,12 @@
     <div class="flex flex-col lg:flex-row">
       <div class="flex flex-col w-full lg:w-1/2">
         <h1>Kereső</h1>
-          <label for="tev">Tevékenység:</label>
-          <select id="tev" v-model="selectedTev" @change="onTevChange">
-            <option
-              v-for="tev in uniqueTevs"
-              :key="tev.tevid"
-              :value="tev.tevid"
-            >
-              {{ tev.tev }}
-            </option>
-          </select>
+        <label for="tev">Tevékenység:</label>
+        <select id="tev" v-model="selectedTev" @change="onTevChange">
+          <option v-for="tev in uniqueTevs" :key="tev.tevid" :value="tev.tevid">
+            {{ tev.tev }}
+          </option>
+        </select>
         <div>
           <label for="fcsop">Folyamatcsoport:</label>
           <select
@@ -57,7 +53,9 @@
             v-for="(item, index) in data"
             :key="index"
             class="flex border border-blue-600 hover:border-blue-900 justify-between rounded-md p-3 pt-4 gap-4 items-center cursor-pointer"
-            :class="{ 'bg-white-to-lightblue': activeClass && item === selectedKockazat }"
+            :class="{
+              'bg-white-to-lightblue': activeClass && item === selectedKockazat,
+            }"
             @click="selectKockazat(item)"
           >
             <div class="basis-4/12">{{ item.kockcsop }}</div>
@@ -67,11 +65,22 @@
         </div>
       </div>
       <div class="flex flex-row lg:flex-col w-full lg:w-1/2">
-        <div
-          v-if="selectedKockazat"
-          class="mt-4 p-4"
-        >
+        <div v-if="selectedKockazat" class="mt-4 p-4">
           <h2 class="text-xl font-bold">{{ selectedKockazat.nev }}</h2>
+          <div v-if="selectedKockazat" class="mt-4">
+            <button
+              @click="addToLeltar"
+              :disabled="isAdded"
+              class="bg-blue-500 text-white py-2 px-4 rounded"
+            >
+              {{ isAdded ? "Hozzáadva" : "Hozzáadom a leltárhoz" }}
+            </button>
+            <div v-if="bodyContent" class="mt-4">
+              <h3 class="text-lg font-semibold">Küldendő adatok:</h3>
+              <pre>{{ bodyContent }}</pre>
+            </div>
+          </div>
+
           <p><strong>Tevékenység:</strong> {{ selectedKockazat.tevid }}</p>
           <p>
             <strong>Folyamatcsoport:</strong> {{ selectedKockazat.fcsopid }}
@@ -101,6 +110,8 @@ export default {
       selectedFoly: null,
       selectedKockazat: null,
       activeClass: false,
+      isAdded: false,
+      bodyContent: '',
     };
   },
   computed: {
@@ -178,6 +189,53 @@ export default {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+    },
+    async addToLeltar() {
+      if (!this.selectedKockazat) return;
+
+      const body = {
+        user_id: this.getCurrentUserId(),
+        kockcsop: this.selectedKockazat.kockcsop,
+        nev: this.selectedKockazat.nev,
+        ok: this.selectedKockazat.ok,
+        kov: this.selectedKockazat.kov,
+        kontr: this.selectedKockazat.kontr,
+        tevid: this.selectedKockazat.tevid,
+        fcsopid: this.selectedKockazat.fcsopid,
+        folyid: this.selectedKockazat.folyid,
+      };
+
+      this.bodyContent = JSON.stringify(body, null, 2); // Formázott JSON string
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_APP_API_BASE_URL}/leltar`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const result = await response.json();
+        if (result.id === this.selectedKockazat.id) {
+          this.isAdded = true;
+        }
+      } catch (error) {
+        console.error("Error adding to leltar:", error);
+      }
+    },
+    getCurrentUserId() {
+      // Implementáld a logikát, hogy lekérdezd a jelenlegi felhasználó azonosítóját
+      // Például a `localStorage`-ből vagy az autentikációs tokenből
+      return 8; // Csak példa, helyettesítsd a tényleges felhasználó id-jával
     },
     selectKockazat(item) {
       this.activeClass = true; // Frissítjük az aktív osztály állapotát
