@@ -71,7 +71,7 @@
             <button
               @click="addToLeltar"
               :disabled="isAdded"
-              class="bg-blue-500 text-white py-2 px-4 rounded"
+              class="bg-blue-800 text-white py-2 px-4 rounded"
             >
               {{ isAdded ? "Hozzáadva" : "Hozzáadom a leltárhoz" }}
             </button>
@@ -114,6 +114,7 @@ export default {
       activeClass: false,
       isAdded: false,
       bodyContent: '',
+      selectedRisk: {},
     };
   },
   computed: {
@@ -163,6 +164,16 @@ export default {
     },
   },
   methods: {
+    async checkAndSetIsAdded() {
+      const excelId = this.selectedRisk.excelId; // Feltételezzük, hogy a kiválasztott kockázat excelId-ját így éred el
+      try {
+        const response = await axios.get(`/check-excelid?excelId=${excelId}`);
+        const result = await response.data;
+        this.isAdded = result.exists;
+      } catch (error) {
+        console.error("Error checking excelId:", error);
+      }
+    },
     async fetchTevs() {
       try {
         const response = await fetch(
@@ -205,6 +216,7 @@ export default {
         tevid: this.selectedKockazat.tevid,
         fcsopid: this.selectedKockazat.fcsopid,
         folyid: this.selectedKockazat.folyid,
+        excelid: this.selectedKockazat.excelid,
       };
 
       this.bodyContent = JSON.stringify(body, null, 2); // Formázott JSON string
@@ -235,6 +247,7 @@ export default {
       }
       
     },
+    
     
     getCurrentUserId() {
       const token = localStorage.getItem("token");

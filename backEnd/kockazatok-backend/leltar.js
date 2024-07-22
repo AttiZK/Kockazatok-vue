@@ -11,7 +11,7 @@ const router = express.Router();
 const db = __importDefault(require("./database/db"));
 
 const addLeltar = async (req, res) => {
-  const { kockcsop, nev, ok, kov, kontr, tevid, fcsopid, folyid } = req.body;
+  const { kockcsop, nev, ok, kov, kontr, tevid, fcsopid, folyid, excelid } = req.body;
   const userId = req.userId;
   console.log('Authenticated user ID:', userId); // Add this line for debugging
   if (!userId) {
@@ -20,10 +20,10 @@ const addLeltar = async (req, res) => {
 
   try {
     const result = await db.default.one(
-      `INSERT INTO leltar (userId, kockcsop, nev, ok, kov, kontr, tevid, fcsopid, folyid, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+      `INSERT INTO leltar (userId, kockcsop, nev, ok, kov, kontr, tevid, fcsopid, folyid, excelid, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
        RETURNING id`,
-      [userId, kockcsop, nev, ok, kov, kontr, tevid, fcsopid, folyid]
+      [userId, kockcsop, nev, ok, kov, kontr, tevid, fcsopid, folyid, excelid]  
     );
     res.status(201).json({ id: result.id });
   } catch (error) {
