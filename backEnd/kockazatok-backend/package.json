@@ -6,6 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index",
     "dev": "nodemon --force index.js",
+    "pm2": "pm2 start index.js",
     "migrate": "node src/database/sync_database.js"
   },
   "keywords": [],
