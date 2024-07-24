@@ -27,11 +27,27 @@ app.use(express_1.default.json());
 
 const authRoute = require("./routes/authRoutes");
 const profileRoute = require("./routes/profileRoute");
+const leltarRoutes = require("./routes/leltarRoutes");
 const { getFolyamat } = require("./folyamatQuery");
 const { addLeltar } = require('./leltar');
+const checkExcelIdExists = require('./controllers/leltarController').checkExcelIdExists;
 
 app.use("/auth", authRoute);
 app.use("/fiokom", profileRoute);
+app.use("/leltar", leltarRoutes);
+app.get("/check-excelid", checkExcelIdExists);
+
+app.get("/leltar", async (req, res) => {
+  const { userid } = req.query;
+  try {
+    const leltar = await db_1.default.any("SELECT * FROM leltar WHERE userid = $1", [userid]);
+    res.json(leltar);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Kockazatok API");

@@ -9,6 +9,7 @@ const db = __importDefault(require("../database/db"));
 
 router.use(verifyToken);
 router.use(getFiokom);
+
 // Get fiokom
 router.get('/fiokom', async (req, res) => {
   try {

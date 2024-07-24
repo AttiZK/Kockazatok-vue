@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  media: false, 
 
   theme: {
     extend: {
@@ -35,6 +35,10 @@ export default {
       listStyleImage: {
         checkmark: 'url("/img/check.svg")',
       },
+      boxShadow: {
+        'base': '7px 5px 0 0 #D4ECFF',
+        'soft': '-22px 0px 30px -30px rgb(110 158 207 / 0.4)'
+      }
     },
     colors: {
       'blue': {

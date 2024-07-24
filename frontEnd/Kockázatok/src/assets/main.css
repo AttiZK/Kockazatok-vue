@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Sanchez&display=swap&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&family=Sanchez&display=swap&subset=latin-ext');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,6 +9,12 @@
   }
   h2{
     @apply text-3xl lg:text-4xl text-blue-800 font-bold
+  }
+  .t-head{
+    @apply text-sm text-blue-800 font-bold uppercase
+  }
+  .nav-item{
+    @apply text-blue-600 font-medium
   }
   button{
     @apply flex items-center gap-4 justify-center py-2 px-4 lg:px-11 rounded-md text-left font-sans w-fit lg:w-max border font-bold 
@@ -62,10 +68,22 @@
   main .container{
     @apply md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl
   }
+  footer{
+    @apply fixed bottom-0 left-0 bg-white w-full h-14 flex justify-between items-center mx-auto border-t-[1px] border-blue-500 px-4 xl:px-8 3xl:px-16
+  }
+
+  .footer-link{
+    @apply flex px-6 h-full gap-2 items-center
+  }
 
   .view{
-    @apply w-full px-2 lg:px-4 xl:px-6
+    @apply w-full
   }
+
+  .cimke{
+    @apply bg-blue-800 text-white font-bold text-xs px-4 py-1 ml-[-16px] rounded-r-md
+  }
+  
 }
 
 :root {
@@ -101,6 +119,10 @@ p{
 li.nav-item{
   font-size: 16px;
   font-weight: 500;
+}
+
+footer > a{
+  height: 100%
 }
 
 #hero-section > .container:after{

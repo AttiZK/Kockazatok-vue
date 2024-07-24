@@ -18,14 +18,14 @@ const routes = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/bejelentkezes', name: 'login', component: LoginPage },
   { path: '/start', name: 'Start', component: StartView, meta: { requiresAuth: true } },
-  { path: '/kereso', name: 'Kereso', component: KeresoView },
-  { path: '/leltar', name: 'Leltar', component: LeltarView },
-  { path: '/ertekelo', name: 'Ertekelo', component: ErtekeloView },
-  { path: '/kezelo', name: 'Kezelo', component: KezeloView },
-  { path: '/riport', name: 'Riport', component: RiportView },
+  { path: '/kereso', name: 'Kereso', component: KeresoView, meta: { requiresAuth: true } },
+  { path: '/leltar', name: 'Leltar', component: LeltarView, meta: { requiresAuth: true } },
+  { path: '/ertekelo', name: 'Ertekelo', component: ErtekeloView, meta: { requiresAuth: true } },
+  { path: '/kezelo', name: 'Kezelo', component: KezeloView, meta: { requiresAuth: true } },
+  { path: '/riport', name: 'Riport', component: RiportView, meta: { requiresAuth: true } },
   { path: '/dokumentacio', name: 'Doku', component: DokuView },
   { path: '/elofizetes', name: 'Elofizetes', component: ElofizetesView },
-  { path: '/fiokom', name: 'Account', component: AccountView }
+  { path: '/fiokom', name: 'Account', component: AccountView, meta: { requiresAuth: true } }
 ];
 
 const router = createRouter({

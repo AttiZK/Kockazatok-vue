@@ -15,13 +15,12 @@
     "vue": "^3.4.29",
     "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.3.3",
-    "vue-scrollto": "^2.20.0",
-    "vuetify": "^3.6.13-3.7.0-beta.0.0"
+    "vue-scrollto": "^2.20.0"
   },
   "devDependencies": {
     "@babel/types": "^7.21.4",
     "@types/node": "^18.15.0",
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue": "^5.1.0",
     "@vue/eslint-config-typescript": "^11.0.0",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.0.0",
@@ -32,6 +31,6 @@
     "typescript": "^5.0.0",
     "vite": "^5.3.1",
     "vite-plugin-vue-devtools": "^7.3.1",
-    "vite-plugin-vuetify": "^2.0.3"
+    "vue-tsc": "^2.0.28"
   }
 }
