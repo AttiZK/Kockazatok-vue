@@ -7,6 +7,8 @@
     "start": "node index",
     "dev": "nodemon --force index.js",
     "pm2": "pm2 start index.js",
+    "pm2-stop": "pm2 stop index.js",
+    "pm2-logs": "pm2 logs",
     "migrate": "node src/database/sync_database.js"
   },
   "keywords": [],
@@ -29,6 +31,7 @@
     "jwt-decode": "^4.0.0",
     "pg": "^8.11.2",
     "pg-promise": "^11.5.3",
+    "pm2": "^5.4.2",
     "sequelize": "^6.37.3"
   }
 }

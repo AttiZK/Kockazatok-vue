@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const router = express.Router();
 const db = __importDefault(require("./database/db"));
-const { checkExcelIdExists } = require("./controllers/leltarController"); // Import the checkExcelIdExists function
+const { checkLeltarExists } = require("./controllers/leltarController"); // Import the checkLeltarExists function
 
 
 const addLeltar = async (req, res) => {
@@ -40,7 +40,7 @@ const addLeltar = async (req, res) => {
     res.status(500).json({ error: "Failed to add to leltar" });
   }
 };
-router.get("/check-excelid", checkExcelIdExists);
+router.get("/check-excelid", checkLeltarExists);
 router.post("/leltar", addLeltar);
 
 module.exports = router;

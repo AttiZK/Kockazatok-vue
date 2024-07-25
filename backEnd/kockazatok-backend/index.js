@@ -13,7 +13,8 @@ const cors = require("cors");
 const app = (0, express_1.default)();
 const { verifyToken } = require('./controllers/authController');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
+const HOST = process.env.HOST;
 const corsOptions = {
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -30,14 +31,14 @@ const profileRoute = require("./routes/profileRoute");
 const leltarRoutes = require("./routes/leltarRoutes");
 const { getFolyamat } = require("./folyamatQuery");
 const { addLeltar } = require('./leltar');
-const checkExcelIdExists = require('./controllers/leltarController').checkExcelIdExists;
+const checkLeltarExists = require('./controllers/leltarController').checkLeltarExists;
 
-app.use("/auth", authRoute);
-app.use("/fiokom", profileRoute);
-app.use("/leltar", leltarRoutes);
-app.get("/check-excelid", checkExcelIdExists);
+app.use("/api/auth", authRoute);
+app.use("/api/fiokom", profileRoute);
+app.use("/api/leltar", leltarRoutes);
+app.get("/api/check-excelid", checkLeltarExists);
 
-app.get("/leltar", async (req, res) => {
+app.get("/api/leltar", async (req, res) => {
   const { userid } = req.query;
   try {
     const leltar = await db_1.default.any("SELECT * FROM leltar WHERE userid = $1", [userid]);
@@ -49,11 +50,11 @@ app.get("/leltar", async (req, res) => {
 
 
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Welcome to the Kockazatok API");
 });
 
-app.get("/kockazatok-all", async (req, res) => {
+app.get("/api/kockazatok-all", async (req, res) => {
   try {
     const kockazat = await db_1.default.any("SELECT * FROM kockazat");
     res.json(kockazat);
@@ -62,7 +63,7 @@ app.get("/kockazatok-all", async (req, res) => {
   }
 });
 
-app.get("/kockazatok", async (req, res) => {
+app.get("/api/kockazatok", async (req, res) => {
   const { tevid, fcsopid, folyid } = req.query;
 
   try {
@@ -77,7 +78,7 @@ app.get("/kockazatok", async (req, res) => {
 
 //folyamat query -> folyamatQuery.js
 
-app.get("/folyamat", cors(corsOptions), async (req, res) => {
+app.get("/api/folyamat", cors(corsOptions), async (req, res) => {
   const { tevid, fcsopid } = req.query;
   try {
     const result = await getFolyamat(tevid, fcsopid);
@@ -89,11 +90,11 @@ app.get("/folyamat", cors(corsOptions), async (req, res) => {
 
 //Leltárhoz adás
 
-app.post('/leltar', verifyToken, addLeltar);
+app.post('/api/leltar', verifyToken, addLeltar);
 
 //kockazatok query
 
-app.post("/kockazatok", async (req, res) => {
+app.post("/api/kockazatok", async (req, res) => {
   const { title, description } = req.body;
   if (!title || !description) {
     return res.status(400).json({ error: "Title and description are required" });
@@ -106,7 +107,7 @@ app.post("/kockazatok", async (req, res) => {
   }
 });
 
-app.put("/kockazatok/:id", async (req, res) => {
+app.put("/api/kockazatok/:id", async (req, res) => {
   try {
     const updatedKockazat = await db_1.default.oneOrNone("UPDATE kockazat SET title = $1, description = $2 WHERE id = $3 RETURNING *", [req.body.title, req.body.description, parseInt(req.params.id)]);
     if (!updatedKockazat) return res.status(404).json({ message: "Kockazat not found" });
@@ -116,7 +117,7 @@ app.put("/kockazatok/:id", async (req, res) => {
   }
 });
 
-app.delete("/leltar/:id", async (req, res) => {
+app.delete("/api/leltar/:id", async (req, res) => {
   try {
     const result = await db_1.default.result("DELETE FROM kockazat WHERE id = $1", [parseInt(req.params.id)]);
     if (!result.rowCount) return res.status(404).json({ message: "kockazat not found" });
@@ -126,10 +127,10 @@ app.delete("/leltar/:id", async (req, res) => {
   }
 });
 
-app.get("/:universalURL", (req, res) => {
+app.get("/api/:universalURL", (req, res) => {
   res.send("404 URL NOT FOUND");
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://${HOST}:${PORT}`);
 });

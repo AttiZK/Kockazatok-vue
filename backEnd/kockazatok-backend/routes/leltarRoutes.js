@@ -5,12 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
 const router = express.Router();
-const { checkExcelIdExists } = require('../controllers/leltarController');
+const { checkLeltarExists } = require('../controllers/leltarController');
 const { verifyToken } = require('../controllers/authController');
 const leltar = require('../leltar');
 
 // Ellenőrizzük az Excel ID létezését
-router.get("/check-excelid", checkExcelIdExists);
+router.get("/check-excelid", checkLeltarExists);
 
 // Új rekord hozzáadása a leltárhoz
 router.post('/leltar', verifyToken, leltar.addLeltar);

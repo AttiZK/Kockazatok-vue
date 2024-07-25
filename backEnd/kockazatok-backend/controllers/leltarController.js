@@ -7,11 +7,12 @@ var __importDefault =
 Object.defineProperty(exports, "__esModule", { value: true });
 const db = __importDefault(require("../database/db")); // Import pg-promise db instance
 
-const checkExcelIdExists = async (req, res) => {
+const checkLeltarExists = async (req, res) => {
   const { excelId, userId } = req.query;
     console.log('Query Parameters:', req.query);
   try {
-    const result = await db.default.oneOrNone("SELECT * FROM leltar WHERE excelid = $1", [excelId]);
+    const result = await db.default.oneOrNone("SELECT * FROM leltar WHERE excelid = $1 AND userid = $2", [excelId, userId]);
+    
     const response = {
       excelId: excelId,
       userId: userId,
@@ -26,6 +27,6 @@ const checkExcelIdExists = async (req, res) => {
 };
 
 module.exports = {
-  checkExcelIdExists,
+  checkLeltarExists,
 };
  
